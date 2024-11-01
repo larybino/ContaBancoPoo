@@ -2,21 +2,19 @@ package servico;
 
 import java.time.LocalTime;
 import java.util.Date;
-import java.util.InputMismatchException;
-import java.util.List;
 
-import dao.ContaDAO;
-import entidade.Conta;
+import dao.MovimentacaoDAO;
+import entidade.Movimentacao;
 
-public class ContaServico {
-	ContaDAO dao = new ContaDAO();
+public class MovimentacaoServico {
+	MovimentacaoDAO dao = new MovimentacaoDAO();
 	
 	
-	public Conta inserir(Conta conta) {
-		conta.setDescricao("Operação de "+conta.getTipoTransacao());
-		conta.setDataTransacao(new Date());
-		Conta contaBanco = dao.inserir(conta);
-		return contaBanco;
+	public Movimentacao inserir(Movimentacao movimentacao) {
+		movimentacao.setDescricao("Operação de "+movimentacao.getTipoTransacao());
+		movimentacao.setDataTransacao(new Date());
+		Movimentacao movimentacaoBanco = dao.inserir(movimentacao);
+		return movimentacaoBanco;
 	}
 
 	public boolean validarCpf(String cpf) {
@@ -40,7 +38,7 @@ public class ContaServico {
         if (tipoTransacao.equals("Pix")) {
             LocalTime now = LocalTime.now();
             if (now.isBefore(LocalTime.of(6, 0)) || now.isAfter(LocalTime.of(22, 0))) {
-                return("Operações de Pix só podem ser realizadas entre 06:00 e 22:00.");
+                return "Operações de Pix só podem ser realizadas entre 06:00 e 22:00.";
             } 	
         } 
 		return " Ok";
@@ -48,7 +46,7 @@ public class ContaServico {
 
 	public String validarLimitePix(double valor){
 		if(valor> 300.00){
-			return("Valor ultrapassou o limite de R$300,00");
+			return "Valor ultrapassou o limite de R$300,00";
 		} 
 		return "Valor dentro do limite"; 
 	}
@@ -56,6 +54,8 @@ public class ContaServico {
 	public String validarLimitesSaque(double saldo, double valor){
 		if(valor>5000.){
 			return "Valor de Saque inválido";
+		} else if (saldo < valor) {
+			return "Saldo insuficiente para sacar esse valor";
 		}
 		return "Saque válido";
 	}
@@ -63,7 +63,9 @@ public class ContaServico {
 	public String validarSaldo(double saldo, double valor) {
 		if (saldo < valor) {
 			return "Saldo insuficiente para sacar esse valor";
-		} else {
+		} else if(saldo<100.){
+			return "Saldo menor que 100 reais. Faça um depósito";
+		}else {
 			return "Saque válido";
 		}
 	}
