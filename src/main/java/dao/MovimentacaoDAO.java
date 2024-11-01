@@ -18,9 +18,8 @@ public class MovimentacaoDAO {
 	public Movimentacao inserir(Movimentacao movimentacao) {
 		EntityManager em = emf.createEntityManager();
 		em.getTransaction().begin();
-		em.persist(movimentacao);
+		em.persist(movimentacao); 
 		em.getTransaction().commit();
-		em.close();
 		return movimentacao;
 	}
 
@@ -115,13 +114,14 @@ public class MovimentacaoDAO {
 	}
 
 	public Double calcularSaldo(String cpf) {
-        EntityManager em = emf.createEntityManager();
-        Double saldo = em.createQuery("SELECT SUM(valorOperacao) FROM Movimentacao WHERE cpfCorrentista = :cpf", Double.class)
-                         .setParameter("cpf", cpf)
-                         .getSingleResult();
-        em.close();
-        return saldo != null ? saldo : 0.0;
-    }
+		EntityManager em = emf.createEntityManager();
+		Double saldo = em.createQuery("SELECT COALESCE(SUM(valorOperacao), 0.0) FROM Movimentacao WHERE cpfCorrentista = :cpf", Double.class)
+						 .setParameter("cpf", cpf)
+						 .getSingleResult();
+		em.close();
+		return saldo;
+	}
+	
 
 	public List<Movimentacao> buscarPorData(String cpf, Date inicio, Date fim) {
 		EntityManager em = emf.createEntityManager();
