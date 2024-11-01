@@ -1,5 +1,7 @@
 package dao;
 
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.persistence.EntityManager;
@@ -72,12 +74,76 @@ public class MovimentacaoDAO {
 		return movimentacoes;
 	}
 
+	public List<Double> buscarGastosPorCpf(String cpf) {
+		EntityManager em = emf.createEntityManager();
+		List<Double> gastos = new ArrayList<>();
+		try {
+			gastos = em.createQuery("SELECT valorOperacao FROM Movimentacao WHERE cpfCorrentista = :cpf", Double.class)
+					.setParameter("cpf", cpf)
+					.getResultList();
+		} finally {
+			em.close();
+		}
+		return gastos;
+	}
+
+	public Double calcularMediaGastos(String cpf) {
+		EntityManager em = emf.createEntityManager();
+		Double mediaGastos = em.createQuery(
+			"SELECT AVG(valorOperacao) FROM Movimentacao WHERE cpfCorrentista = :cpf", Double.class)
+			.setParameter("cpf", cpf)
+			.getSingleResult();
+		em.close();
+		return mediaGastos != null ? mediaGastos : 0.0;
+	}
+	
 
 	public Movimentacao buscarPorId(Long id) {
 		EntityManager em = emf.createEntityManager();
 		Movimentacao movimentacao = em.find(Movimentacao.class, id);
 		em.close();
 		return movimentacao;
-		// return em.find(Movimentacao.class, id);
 	}
+
+	public List <Movimentacao> buscaTipoTransacao(String tipoTransacao){
+		EntityManager em = emf.createEntityManager();
+		TypedQuery<Movimentacao> query = em.createQuery("from Movimentacao where tipoTransacao = :tipo", Movimentacao.class);
+		query.setParameter("tipo", tipoTransacao);
+		List<Movimentacao> movimentacaos=query.getResultList();
+		em.close();
+		return movimentacaos;
+	}
+
+	public Double calcularSaldo(String cpf) {
+        EntityManager em = emf.createEntityManager();
+        Double saldo = em.createQuery("SELECT SUM(valorOperacao) FROM Movimentacao WHERE cpfCorrentista = :cpf", Double.class)
+                         .setParameter("cpf", cpf)
+                         .getSingleResult();
+        em.close();
+        return saldo != null ? saldo : 0.0;
+    }
+
+	public List<Movimentacao> buscarPorData(String cpf, Date inicio, Date fim) {
+		EntityManager em = emf.createEntityManager();
+		TypedQuery<Movimentacao> query = em.createQuery(
+			"FROM Movimentacao WHERE cpfCorrentista = :cpf AND dataTransacao BETWEEN :inicio AND :fim",
+			Movimentacao.class
+		);
+		query.setParameter("cpf", cpf);
+		query.setParameter("inicio", inicio);
+		query.setParameter("fim", fim);
+		List<Movimentacao> movimentacoes = query.getResultList();
+		em.close();
+		return movimentacoes;
+	}
+	
+	public int contarOperacoesPorDia(String cpf) {
+		EntityManager em = emf.createEntityManager();
+		Long count = em.createQuery("SELECT COUNT(m) FROM Movimentacao m WHERE cpfCorrentista = :cpf AND DATE(dataTransacao) = CURRENT_DATE", Long.class)
+					   .setParameter("cpf", cpf)
+					   .getSingleResult();
+		em.close();
+		return count.intValue();
+	}
+	
 }

@@ -13,11 +13,10 @@ public class MovimentacaoTela {
 		Movimentacao movimentacao = new Movimentacao();
 		movimentacao.setCpfCorrentista("04425225112");
 		movimentacao.setDataTransacao(new Date());
-		movimentacao.setDescricao("Depósito de 500,00 no dia 03/10/24");
+		movimentacao.setDescricao("Saque de 500,00 no dia 03/10/24");
 		movimentacao.setNomeCorrentista("José");
-		movimentacao.setTipoTransacao("depósito");
-		movimentacao.setValorOperacao(500.);
-		
+		movimentacao.setTipoTransacao("saque");
+		movimentacao.setValorOperacao(500.);	
 		controle.inserir(movimentacao);
 	}
 
