@@ -25,8 +25,7 @@ public class Movimentacao {
 	@Column(length = 150, name = "descricao", nullable = true, unique = false)
 	private String descricao;
 	private String tipoTransacao;
-	private String nomeCorrentista;
-	private String cpfCorrentista;
+	private Conta conta;
 
 	public Long getId() {
 		return id;
@@ -68,27 +67,20 @@ public class Movimentacao {
 		this.tipoTransacao = tipoTransacao;
 	}
 
-	public String getNomeCorrentista() {
-		return nomeCorrentista;
-	}
-
-	public void setNomeCorrentista(String nomeCorrentista) {
-		this.nomeCorrentista = nomeCorrentista;
-	}
-
-	public String getCpfCorrentista() {
-		return cpfCorrentista;
-	}
-
-	public void setCpfCorrentista(String cpfCorrentista) {
-		this.cpfCorrentista = cpfCorrentista;
-	}
+	
 
 	@Override
 	public String toString() {
 		return "Movimentacao [id=" + id + ", valorOperacao=" + valorOperacao + ", dataTransacao=" + dataTransacao
-				+ ", descricao=" + descricao + ", tipoTransacao=" + tipoTransacao + ", nomeCorrentista="
-				+ nomeCorrentista + ", cpfCorrentista=" + cpfCorrentista + "]";
+				+ ", descricao=" + descricao + ", tipoTransacao=" + tipoTransacao + "]";
+	}
+
+	public Conta getConta() {
+		return conta;
+	}
+
+	public void setConta(Conta conta) {
+		this.conta = conta;
 	}
 
 }
