@@ -42,5 +42,4 @@ public class MovimentacaoControle {
 	public double consultarSaldo(String cpfCorrentista) {
 		return servico.consultarSaldo(cpfCorrentista);
 	}
-	
 }

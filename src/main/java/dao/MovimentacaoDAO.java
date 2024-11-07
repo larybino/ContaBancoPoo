@@ -104,22 +104,14 @@ public class MovimentacaoDAO {
 		return movimentacao;
 	}
 
-	public List <Movimentacao> buscaTipoTransacao(String tipoTransacao){
-		EntityManager em = emf.createEntityManager();
-		TypedQuery<Movimentacao> query = em.createQuery("from Movimentacao where tipoTransacao = :tipo", Movimentacao.class);
-		query.setParameter("tipo", tipoTransacao);
-		List<Movimentacao> movimentacaos=query.getResultList();
-		em.close();
-		return movimentacaos;
-	}
+	
 
 	public Double calcularSaldo(String cpf) {
 		EntityManager em = emf.createEntityManager();
-		Double saldo = em.createQuery("SELECT COALESCE(SUM(valorOperacao), 0.0) FROM Movimentacao WHERE cpfCorrentista = :cpf", Double.class)
+		return em.createQuery("SELECT COALESCE(SUM(valorOperacao), 0.0) FROM Movimentacao WHERE cpfCorrentista = :cpf", Double.class)
 						 .setParameter("cpf", cpf)
 						 .getSingleResult();
-		em.close();
-		return saldo;
+	
 	}
 	
 

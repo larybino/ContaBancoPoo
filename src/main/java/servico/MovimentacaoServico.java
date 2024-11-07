@@ -20,23 +20,22 @@ public class MovimentacaoServico {
 
 //Validar o CPF no momento de fazer uma transação (saque, depósito, pagamento ou Pix).
 //Tarifa de Operação: R$ 5,00 para pagamentos e pix, R$ 2,00 para saques.
-public Movimentacao realizarSaque(Movimentacao movimentacao) {
-    validarCpf(movimentacao);
-    validarLimiteOperacoes(movimentacao.getCpfCorrentista());
-    detectarFraude(movimentacao);
-    double saldo = dao.calcularSaldo(movimentacao.getCpfCorrentista());
-    System.out.println("Saldo antes do saque: R$ " + saldo);
-    validarSaldo(saldo, movimentacao);
-    validarLimitesSaque(movimentacao);
-    double tarifa = 2.00; 
-    double valorFinal = movimentacao.getValorOperacao() + tarifa; // Total a debitar da conta
-    movimentacao.setValorOperacao(-valorFinal); 
-    Movimentacao result = inserir(movimentacao);
-    saldo = dao.calcularSaldo(movimentacao.getCpfCorrentista()); // Recalcula após inserção
-    System.out.println("Saldo após o saque: R$ " + saldo);
-    return result;
-}
-
+	public Movimentacao realizarSaque(Movimentacao movimentacao) {
+		validarCpf(movimentacao);
+		validarLimiteOperacoes(movimentacao.getCpfCorrentista());
+		detectarFraude(movimentacao);
+		double saldo = dao.calcularSaldo(movimentacao.getCpfCorrentista());
+		System.out.println("Saldo antes do saque: R$ " + saldo);
+		validarSaldo(saldo, movimentacao);
+		validarLimitesSaque(movimentacao);
+		double tarifa = 2.00; 
+		double valorFinal = movimentacao.getValorOperacao() + tarifa; // Total a debitar da conta
+		movimentacao.setValorOperacao(-valorFinal); 
+		Movimentacao result = inserir(movimentacao);
+		saldo = dao.calcularSaldo(movimentacao.getCpfCorrentista()); // Recalcula após inserção
+		System.out.println("Saldo após o saque: R$ " + saldo);
+		return result;
+	}
 	
 	public Movimentacao realizarDeposito(Movimentacao movimentacao) {
 		validarCpf(movimentacao);
@@ -52,7 +51,7 @@ public Movimentacao realizarSaque(Movimentacao movimentacao) {
 		double saldo = dao.calcularSaldo(movimentacao.getCpfCorrentista());
 		validarSaldo(saldo, movimentacao);
 		double tarifa = 5.00;
-		movimentacao.setValorOperacao(movimentacao.getValorOperacao() + tarifa);
+		movimentacao.setValorOperacao(- (movimentacao.getValorOperacao() + tarifa)); // Torna o valor negativo
 		verificarAlertaSaldoBaixo(saldo);
 		return inserir(movimentacao);
 	}
@@ -66,12 +65,10 @@ public Movimentacao realizarSaque(Movimentacao movimentacao) {
 		validarSaldo(saldo, movimentacao);
 		validarLimitePix(movimentacao);
 		double tarifa = 5.00;
-		movimentacao.setValorOperacao(movimentacao.getValorOperacao() + tarifa);
+		movimentacao.setValorOperacao(- (movimentacao.getValorOperacao() + tarifa)); // Torna o valor negativo
 		verificarAlertaSaldoBaixo(saldo);
 		return inserir(movimentacao);
 	}
-	
-
 
 	public boolean validarCpf(Movimentacao movimentacao) {
 		String cpf = movimentacao.getCpfCorrentista();
@@ -156,9 +153,7 @@ public Movimentacao realizarSaque(Movimentacao movimentacao) {
 		return dao.buscarPorData(cpf, inicio, fim);
 	}
 	
-
 	public double consultarSaldo(String cpfCorrentista) {
 		return dao.calcularSaldo(cpfCorrentista);
-	}
-	
+	}	
 }	
