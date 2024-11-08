@@ -11,6 +11,11 @@ import javax.persistence.TypedQuery;
 import entidade.Movimentacao;
 
 public class MovimentacaoDAO {
+	private ContaDAO contaDAO; 
+	
+	public MovimentacaoDAO() {
+        contaDAO = new ContaDAO(); 
+    }
 
 	EntityManagerFactory emf = Persistence.createEntityManagerFactory("bancoPU");
 
@@ -66,14 +71,13 @@ public class MovimentacaoDAO {
 	public Double calcularMediaGastos(Long id) {
 		EntityManager em = emf.createEntityManager();
 		Double mediaGastos = em.createQuery(
-			"SELECT AVG(valorOperacao) FROM Movimentacao WHERE cpfCorrentista = :cpf", Double.class)
-			.setParameter("id_cliente", id)
+			"SELECT AVG(m.valorOperacao) FROM Movimentacao m WHERE m.conta.id = :id_conta", Double.class)
+			.setParameter("id_conta", id)
 			.getSingleResult();
 		em.close();
 		return mediaGastos != null ? mediaGastos : 0.0;
 	}
 	
-
 	public Movimentacao buscarPorId(Long id) {
 		EntityManager em = emf.createEntityManager();
 		Movimentacao movimentacao = em.find(Movimentacao.class, id);
@@ -81,20 +85,14 @@ public class MovimentacaoDAO {
 		return movimentacao;
 	}
 
-
 	public Double calcularSaldo(Long id) {
-		EntityManager em = emf.createEntityManager();
-		return em.createQuery("SELECT COALESCE(SUM(valorOperacao), 0.0) FROM Movimentacao WHERE cpfCorrentista = :cpf", Double.class)
-						 .setParameter("id_conta", id)
-						 .getSingleResult();
-	
+		return contaDAO.calcularSaldo(id);
 	}
 	
-
 	public List<Movimentacao> buscarPorData(Long id, Date inicio, Date fim) {
 		EntityManager em = emf.createEntityManager();
 		TypedQuery<Movimentacao> query = em.createQuery(
-			"FROM Movimentacao WHERE cpfCorrentista = :cpf AND dataTransacao BETWEEN :inicio AND :fim",
+			"FROM Movimentacao m WHERE m.conta.id = :id_conta AND m.dataTransacao BETWEEN :inicio AND :fim",
 			Movimentacao.class
 		);
 		query.setParameter("id_conta", id);
@@ -104,14 +102,4 @@ public class MovimentacaoDAO {
 		em.close();
 		return movimentacoes;
 	}
-	
-	public int contarOperacoesPorDia(Long id) {
-		EntityManager em = emf.createEntityManager();
-		Long count = em.createQuery("SELECT COUNT(m) FROM Movimentacao m WHERE cpfCorrentista = :cpf AND DATE(dataTransacao) = CURRENT_DATE", Long.class)
-					   .setParameter("id_conta", id)
-					   .getSingleResult();
-		em.close();
-		return count.intValue();
-	}
-	
 }

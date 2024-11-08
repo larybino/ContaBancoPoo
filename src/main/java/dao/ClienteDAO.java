@@ -6,7 +6,7 @@ import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
-import javax.persistence.TypedQuery;
+import javax.persistence.Query;
 
 
 public class ClienteDAO {
@@ -21,21 +21,21 @@ public class ClienteDAO {
     }
 
     public Cliente alterar(Cliente cliente) {
-        Cliente contaBanco = null;
+        Cliente clienteBanco = null;
         if (cliente.getId() != null) {
             EntityManager em = emf.createEntityManager();
             em.getTransaction().begin();
 
-            contaBanco = buscarPorId(cliente.getId());
+            clienteBanco = buscarPorId(cliente.getId());
 
-            if (contaBanco != null) {
-                em.merge(contaBanco);
+            if (clienteBanco != null) {
+                em.merge(clienteBanco);
             }
 
             em.getTransaction().commit();
             em.close();
         }
-        return contaBanco;
+        return clienteBanco;
     }
 
     public void excluir(Long id) {
@@ -59,16 +59,15 @@ public class ClienteDAO {
     // buscar todas as movimentacaoes de acordo com o CPF
     // buscar todas as movimentacaoes de acordo com o tipo da transação
 
-    public List<Cliente> buscarPorCpf(String cpf) {
-        EntityManager em = emf.createEntityManager();
-        // Specify the type in the createQuery method
-        TypedQuery<Cliente> query = em.createQuery("from Cliente where cpfCorrentista = :cpf",
-                Cliente.class);
+    public Cliente buscarPorCpf(String cpf){
+		EntityManager em = emf.createEntityManager();
+		//hql: hibernate query language
+		Query query = em.createQuery("SELECT c FROM Cliente c WHERE c.cpfCorrentista = :cpf");
         query.setParameter("cpf", cpf);
-        List<Cliente> movimentacoes = query.getResultList();
-        em.close();
-        return movimentacoes;
-    }
+		Cliente cliente = (Cliente) query.getSingleResult();
+		em.close();
+		return cliente;
+	}
 
     public Cliente buscarPorId(Long id) {
         EntityManager em = emf.createEntityManager();

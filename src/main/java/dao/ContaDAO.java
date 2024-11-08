@@ -65,4 +65,23 @@ public class ContaDAO {
         return conta;
     }
 
+    public int contarOperacoesPorDia(Long id) {
+        EntityManager em = emf.createEntityManager();
+        Long count = em.createQuery(
+            "SELECT COUNT(m) FROM Movimentacao m WHERE m.conta.id = :id_conta AND DATE(m.dataTransacao) = CURRENT_DATE", Long.class)
+            .setParameter("id_conta", id)
+            .getSingleResult();
+        em.close();
+        return count.intValue();
+    }
+    
+
+    public Double calcularSaldo(Long id) {
+        EntityManager em = emf.createEntityManager();
+        return em.createQuery(
+            "SELECT COALESCE(SUM(m.valorOperacao), 0.0) FROM Movimentacao m WHERE m.conta.id = :id_conta", Double.class)
+            .setParameter("id_conta", id)
+            .getSingleResult();
+    }
+    
 }

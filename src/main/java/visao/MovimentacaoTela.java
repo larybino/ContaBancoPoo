@@ -6,34 +6,21 @@ import java.util.Date;
 import java.util.List;
 
 import controle.MovimentacaoControle;
-import dao.ClienteDAO;
-import dao.ContaDAO;
-import entidade.Movimentacao;
-import entidade.Cliente;
 import entidade.Conta;
+import entidade.Movimentacao;
 
 public class MovimentacaoTela {
 
 	public static void main(String[] args) throws ParseException {
-		ClienteDAO clienteDAO = new ClienteDAO();
-		ContaDAO contaDAO = new ContaDAO();
-		
-		Cliente cliente = new Cliente();
-		clienteDAO.inserir(cliente);
-
-		Conta conta = new Conta();
-		conta.setCliente(cliente);
-		contaDAO.inserir(contaDAO);
-
 		MovimentacaoControle controle = new MovimentacaoControle();
-		
+		Conta conta= new Conta();
 		Movimentacao movimentacao = new Movimentacao();
-		cliente.setCpfCorrentista("12345678909");
 		movimentacao.setDataTransacao(new Date());
 		movimentacao.setDescricao("depósito de 500,00");
-		cliente.setNomeCorrentista("Laryssa");
 		movimentacao.setTipoTransacao("depósito");
-		movimentacao.setValorOperacao(500.);	
+		movimentacao.setValorOperacao(500.);
+		conta.setId(6L);	
+		movimentacao.setConta(conta);
 
 		switch(movimentacao.getTipoTransacao()){
 			case "saque":
@@ -50,13 +37,13 @@ public class MovimentacaoTela {
 				break;
 		}
 
-		double saldo = controle.consultarSaldo(cliente.getCpfCorrentista());
+		double saldo = controle.consultarSaldo(conta.getId());
 		System.out.println("R$ " + saldo);
 
 		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 		Date inicio = sdf.parse("01/11/2024"); 
 		Date fim = sdf.parse("31/11/2024");    
-		List<Movimentacao> extrato = controle.consultarExtrato(conta.getId(), inicio, fim);
+		List<Movimentacao> extrato = controle.consultarExtrato(movimentacao.getId(), inicio, fim);
 		if (extrato != null && !extrato.isEmpty()) {
 			System.out.println("Extrato do período de " + sdf.format(inicio) + " a " + sdf.format(fim) + ":");
 				for (Movimentacao mov : extrato) {

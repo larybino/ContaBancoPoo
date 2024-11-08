@@ -7,6 +7,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -25,6 +27,8 @@ public class Movimentacao {
 	@Column(length = 150, name = "descricao", nullable = true, unique = false)
 	private String descricao;
 	private String tipoTransacao;
+	@ManyToOne
+    @JoinColumn(name = "conta")
 	private Conta conta;
 
 	public Long getId() {

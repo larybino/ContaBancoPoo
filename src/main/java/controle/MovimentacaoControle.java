@@ -14,21 +14,21 @@ public class MovimentacaoControle {
 		return servico.inserir(movimentacao);
 	}
 
-	// public Movimentacao realizarSaque(Movimentacao movimentacao){
-	// 	return servico.realizarSaque(movimentacao);
-	// }
+	public Movimentacao realizarSaque(Movimentacao movimentacao){
+		return servico.realizarSaque(movimentacao);
+	}
 
-	// public Movimentacao realizarDeposito(Movimentacao movimentacao){
-	// 	return servico.realizarDeposito(movimentacao);
-	// }
+	public Movimentacao realizarDeposito(Movimentacao movimentacao){
+		return servico.realizarDeposito(movimentacao);
+	}
 
-	// public Movimentacao realizarPagamento(Movimentacao movimentacao){
-	// 	return servico.realizarPagamento(movimentacao);
-	// }
+	public Movimentacao realizarPagamento(Movimentacao movimentacao){
+		return servico.realizarPagamento(movimentacao);
+	}
 
-	// public Movimentacao realizarPix(Movimentacao movimentacao){
-	// 	return servico.realizarPix(movimentacao);
-	// }
+	public Movimentacao realizarPix(Movimentacao movimentacao){
+		return servico.realizarPix(movimentacao);
+	}
 	
 	public List<Movimentacao> consultarExtrato(Long id, Date inicio, Date fim) {
         try {

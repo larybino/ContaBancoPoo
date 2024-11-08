@@ -13,4 +13,8 @@ public class ClienteControle {
     public void excluir(Cliente cliente) {
         servico.excluir(cliente);
     }
+
+    public boolean validarCliente(Cliente cliente){
+        return servico.validarCliente(cliente);
+    }
 }

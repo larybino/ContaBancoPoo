@@ -18,6 +18,12 @@ public class ClienteServico {
         dao.excluir(cliente.getId());
     }
 
-    
+    public boolean validarCliente(Cliente cliente){
+        Cliente clienteValido= dao.buscarPorCpf(cliente.getCpfCorrentista());
+        if (clienteValido == null || !clienteValido.getCpfCorrentista().equals(cliente.getCpfCorrentista())) {
+            return false;
+        }
+        return true;
+    }
     
 }

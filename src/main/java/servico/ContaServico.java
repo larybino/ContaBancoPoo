@@ -10,7 +10,19 @@ public class ContaServico {
         return dao.inserir(conta);
     }
 
-    public void excluir(Conta conta){
+    public void excluir(Conta conta) {
+        if (dao.buscarPorId(conta.getId()) == null) {
+            throw new IllegalArgumentException("Conta não encontrada para exclusão.");
+        }
         dao.excluir(conta.getId());
     }
+
+    public boolean validarLimiteOperacoes(Long id) {
+        int totalOperacoes = dao.contarOperacoesPorDia(id);
+        if (totalOperacoes >= 10) {
+            throw new IllegalArgumentException("Limite diário de operações atingido.");
+        }
+        return true; 
+    }
+    
 }

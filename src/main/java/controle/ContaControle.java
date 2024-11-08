@@ -13,4 +13,10 @@ public class ContaControle {
     public void excluir(Conta conta) {
         servico.excluir(conta);
     }
+
+    public boolean validarLimiteOperacoes(Long id){
+        return servico.validarLimiteOperacoes(id);
+    }
+    
+    
 }
