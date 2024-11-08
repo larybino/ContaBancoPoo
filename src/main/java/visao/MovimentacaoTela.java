@@ -56,7 +56,7 @@ public class MovimentacaoTela {
 		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 		Date inicio = sdf.parse("01/11/2024"); 
 		Date fim = sdf.parse("31/11/2024");    
-		List<Movimentacao> extrato = controle.consultarExtrato(cliente.getCpfCorrentista(), inicio, fim);
+		List<Movimentacao> extrato = controle.consultarExtrato(conta.getId(), inicio, fim);
 		if (extrato != null && !extrato.isEmpty()) {
 			System.out.println("Extrato do período de " + sdf.format(inicio) + " a " + sdf.format(fim) + ":");
 				for (Movimentacao mov : extrato) {

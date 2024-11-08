@@ -1,6 +1,5 @@
 package dao;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -64,11 +63,11 @@ public class MovimentacaoDAO {
 	// buscar todas as movimentacaoes de acordo com o tipo da transação
 
 
-	public Double calcularMediaGastos(String cpf) {
+	public Double calcularMediaGastos(Long id) {
 		EntityManager em = emf.createEntityManager();
 		Double mediaGastos = em.createQuery(
 			"SELECT AVG(valorOperacao) FROM Movimentacao WHERE cpfCorrentista = :cpf", Double.class)
-			.setParameter("cpf", cpf)
+			.setParameter("id_cliente", id)
 			.getSingleResult();
 		em.close();
 		return mediaGastos != null ? mediaGastos : 0.0;
@@ -83,22 +82,22 @@ public class MovimentacaoDAO {
 	}
 
 
-	public Double calcularSaldo(String cpf) {
+	public Double calcularSaldo(Long id) {
 		EntityManager em = emf.createEntityManager();
 		return em.createQuery("SELECT COALESCE(SUM(valorOperacao), 0.0) FROM Movimentacao WHERE cpfCorrentista = :cpf", Double.class)
-						 .setParameter("cpf", cpf)
+						 .setParameter("id_conta", id)
 						 .getSingleResult();
 	
 	}
 	
 
-	public List<Movimentacao> buscarPorData(Long idCliente, Date inicio, Date fim) {
+	public List<Movimentacao> buscarPorData(Long id, Date inicio, Date fim) {
 		EntityManager em = emf.createEntityManager();
 		TypedQuery<Movimentacao> query = em.createQuery(
 			"FROM Movimentacao WHERE cpfCorrentista = :cpf AND dataTransacao BETWEEN :inicio AND :fim",
 			Movimentacao.class
 		);
-		query.setParameter("id_cliente", idCliente);
+		query.setParameter("id_conta", id);
 		query.setParameter("inicio", inicio);
 		query.setParameter("fim", fim);
 		List<Movimentacao> movimentacoes = query.getResultList();
@@ -106,10 +105,10 @@ public class MovimentacaoDAO {
 		return movimentacoes;
 	}
 	
-	public int contarOperacoesPorDia(String cpf) {
+	public int contarOperacoesPorDia(Long id) {
 		EntityManager em = emf.createEntityManager();
 		Long count = em.createQuery("SELECT COUNT(m) FROM Movimentacao m WHERE cpfCorrentista = :cpf AND DATE(dataTransacao) = CURRENT_DATE", Long.class)
-					   .setParameter("cpf", cpf)
+					   .setParameter("id_conta", id)
 					   .getSingleResult();
 		em.close();
 		return count.intValue();

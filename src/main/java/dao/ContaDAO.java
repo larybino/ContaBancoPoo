@@ -10,7 +10,7 @@ import javax.persistence.Persistence;
 public class ContaDAO {
     EntityManagerFactory emf = Persistence.createEntityManagerFactory("bancoPU");
 
-    public ContaDAO inserir(ContaDAO conta) {
+    public Conta inserir(Conta conta) {
         EntityManager em = emf.createEntityManager();
         em.getTransaction().begin();
         em.persist(conta);

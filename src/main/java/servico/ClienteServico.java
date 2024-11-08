@@ -10,9 +10,12 @@ public class ClienteServico {
     public Cliente inserir(Cliente cliente) {
         if(!ValidarCpf.validar(cliente.getCpfCorrentista())){
             throw new IllegalArgumentException("CPF inválido");
-        }
-        Cliente clienteBanco = dao.inserir(cliente);
-        return clienteBanco;
+        } 
+        return dao.inserir(cliente);
+    }
+
+    public void excluir(Cliente cliente){
+        dao.excluir(cliente.getId());
     }
 
     
