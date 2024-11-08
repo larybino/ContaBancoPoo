@@ -58,8 +58,8 @@ public class MovimentacaoServico {
 	
 	public Movimentacao realizarPix(Movimentacao movimentacao) {
 		validarHorarioPix(movimentacao);
-		validarCpf(movimentacao);
-		validarLimiteOperacoes(movimentacao.getCpfCorrentista());
+		validar(cpf);
+		validarLimiteOperacoes(cpf);
 		detectarFraude(movimentacao);
 		double saldo = dao.calcularSaldo(movimentacao.getCpfCorrentista());
 		validarSaldo(saldo, movimentacao);
@@ -68,23 +68,6 @@ public class MovimentacaoServico {
 		movimentacao.setValorOperacao(- (movimentacao.getValorOperacao() + tarifa)); // Torna o valor negativo
 		verificarAlertaSaldoBaixo(saldo);
 		return inserir(movimentacao);
-	}
-
-	public boolean validarCpf(Movimentacao movimentacao) {
-		String cpf = movimentacao.getCpfCorrentista();
-		if (cpf.length() != 11 || cpf.matches("(\\d)\\1{10}"))
-			return false;
-		int soma = 0;
-		for (int i = 0; i < 9; i++) {
-			soma += (cpf.charAt(i) - '0') * (10 - i);
-		}
-		int dig10 = (soma % 11 < 2) ? 0 : 11 - (soma % 11);
-		soma = 0;
-		for (int i = 0; i < 10; i++) {
-			soma += (cpf.charAt(i) - '0') * (11 - i);
-		}
-		int dig11 = (soma % 11 < 2) ? 0 : 11 - (soma % 11);
-		return (dig10 == (cpf.charAt(9) - '0')) && (dig11 == (cpf.charAt(10) - '0'));
 	}
 	
 	//As operações de Pix só podem ser realizadas entre 06:00 e 22:00.

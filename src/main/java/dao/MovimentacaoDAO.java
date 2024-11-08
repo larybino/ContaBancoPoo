@@ -63,28 +63,6 @@ public class MovimentacaoDAO {
 	// buscar todas as movimentacaoes de acordo com o CPF
 	// buscar todas as movimentacaoes de acordo com o tipo da transação
 
-	public List<Movimentacao> buscarPorCpf(String cpf) {
-		EntityManager em = emf.createEntityManager();
-		// Specify the type in the createQuery method
-		TypedQuery<Movimentacao> query = em.createQuery("from Movimentacao where cpfCorrentista = :cpf", Movimentacao.class);
-		query.setParameter("cpf", cpf);
-		List<Movimentacao> movimentacoes = query.getResultList();
-		em.close();
-		return movimentacoes;
-	}
-
-	public List<Double> buscarGastosPorCpf(String cpf) {
-		EntityManager em = emf.createEntityManager();
-		List<Double> gastos = new ArrayList<>();
-		try {
-			gastos = em.createQuery("SELECT valorOperacao FROM Movimentacao WHERE cpfCorrentista = :cpf", Double.class)
-					.setParameter("cpf", cpf)
-					.getResultList();
-		} finally {
-			em.close();
-		}
-		return gastos;
-	}
 
 	public Double calcularMediaGastos(String cpf) {
 		EntityManager em = emf.createEntityManager();
@@ -104,7 +82,6 @@ public class MovimentacaoDAO {
 		return movimentacao;
 	}
 
-	
 
 	public Double calcularSaldo(String cpf) {
 		EntityManager em = emf.createEntityManager();
@@ -115,13 +92,13 @@ public class MovimentacaoDAO {
 	}
 	
 
-	public List<Movimentacao> buscarPorData(String cpf, Date inicio, Date fim) {
+	public List<Movimentacao> buscarPorData(Long idCliente, Date inicio, Date fim) {
 		EntityManager em = emf.createEntityManager();
 		TypedQuery<Movimentacao> query = em.createQuery(
 			"FROM Movimentacao WHERE cpfCorrentista = :cpf AND dataTransacao BETWEEN :inicio AND :fim",
 			Movimentacao.class
 		);
-		query.setParameter("cpf", cpf);
+		query.setParameter("id_cliente", idCliente);
 		query.setParameter("inicio", inicio);
 		query.setParameter("fim", fim);
 		List<Movimentacao> movimentacoes = query.getResultList();
