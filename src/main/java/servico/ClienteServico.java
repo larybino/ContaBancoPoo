@@ -25,5 +25,8 @@ public class ClienteServico {
         }
         return true;
     }
-    
+
+    public Cliente buscarPorId(Long id) {
+        return dao.buscarPorId(id);
+    }
 }

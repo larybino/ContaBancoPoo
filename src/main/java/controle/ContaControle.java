@@ -18,5 +18,11 @@ public class ContaControle {
         return servico.validarLimiteOperacoes(id);
     }
     
-    
+    public boolean adicionarConta(Long id){
+        return servico.adicionarConta(id);
+    }
+
+    public Conta buscarPorId(Long id) {
+        return servico.buscarPorId(id);
+    }
 }

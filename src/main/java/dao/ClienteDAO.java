@@ -15,7 +15,7 @@ public class ClienteDAO {
     public Cliente inserir(Cliente cliente) {
         EntityManager em = emf.createEntityManager();
         em.getTransaction().begin();
-        em.persist(cliente);
+        em.merge(cliente);
         em.getTransaction().commit();
         return cliente;
     }

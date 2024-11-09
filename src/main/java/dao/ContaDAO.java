@@ -13,7 +13,7 @@ public class ContaDAO {
     public Conta inserir(Conta conta) {
         EntityManager em = emf.createEntityManager();
         em.getTransaction().begin();
-        em.persist(conta);
+        em.merge(conta);
         em.getTransaction().commit();
         return conta;
     }
@@ -75,6 +75,15 @@ public class ContaDAO {
         return count.intValue();
     }
     
+    public int contarPorConta(Long id) {
+        EntityManager em = emf.createEntityManager();
+        Long count = em.createQuery(
+            "SELECT COUNT(c) FROM Conta c WHERE c.cliente.id = :id_cliente", Long.class)
+            .setParameter("id_cliente", id)
+            .getSingleResult();
+        em.close();
+        return count.intValue();
+    }
 
     public Double calcularSaldo(Long id) {
         EntityManager em = emf.createEntityManager();

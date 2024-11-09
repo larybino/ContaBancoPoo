@@ -1,5 +1,6 @@
 package servico;
 
+
 import dao.ContaDAO;
 import entidade.Conta;
 
@@ -23,6 +24,18 @@ public class ContaServico {
             throw new IllegalArgumentException("Limite diário de operações atingido.");
         }
         return true; 
+    }
+
+    public boolean adicionarConta(Long id) {
+        int totalContas = dao.contarPorConta(id);
+        if (totalContas >= 3) {
+            throw new IllegalArgumentException("Limite de contas atingido.");
+        }
+        return true;
+    }
+
+    public Conta buscarPorId(Long id) {
+        return dao.buscarPorId(id);
     }
     
 }

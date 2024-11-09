@@ -22,7 +22,7 @@ public class MovimentacaoDAO {
 	public Movimentacao inserir(Movimentacao movimentacao) {
 		EntityManager em = emf.createEntityManager();
 		em.getTransaction().begin();
-		em.persist(movimentacao); 
+		em.merge(movimentacao); 
 		em.getTransaction().commit();
 		return movimentacao;
 	}
