@@ -30,6 +30,10 @@ public class MovimentacaoControle {
 	public Movimentacao realizarPix(Movimentacao movimentacao, Conta conta){
 		return servico.realizarPix(movimentacao, conta);
 	}
+
+	public Movimentacao debito(Movimentacao movimentacao, Conta conta){
+		return servico.debito(movimentacao, conta);
+	}
 	
 	public List<Movimentacao> consultarExtrato(Long id, Date inicio, Date fim) {
         try {

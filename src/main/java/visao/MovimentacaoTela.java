@@ -20,8 +20,8 @@ public class MovimentacaoTela {
 		double saldo = controle.consultarSaldo(conta.getId());
 		System.out.println("Valor antes da operação: R$ " + saldo);
 		movimentacao.setDataTransacao(new Date());
-		movimentacao.setDescricao("pagamento de 10,00");
-		movimentacao.setTipoTransacao("pagamento");
+		movimentacao.setDescricao("debito de 10,00");
+		movimentacao.setTipoTransacao("débito");
 		movimentacao.setValorOperacao(10.);
 		movimentacao.setConta(conta);
 
@@ -38,6 +38,8 @@ public class MovimentacaoTela {
 			case "pix":
 				controle.realizarPix(movimentacao, conta);
 				break;
+			case "débito":
+				controle.debito(movimentacao, conta);
 		}
 
 		saldo = controle.consultarSaldo(conta.getId());

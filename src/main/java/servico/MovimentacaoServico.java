@@ -1,6 +1,7 @@
 package servico;
 
 import java.time.LocalTime;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -63,6 +64,22 @@ public Movimentacao realizarSaque(Movimentacao movimentacao, Conta conta) {
 		verificarAlertaSaldoBaixo(saldo);
 		return inserir(movimentacao);
 	}
+
+	public Movimentacao debito(Movimentacao movimentacao, Conta conta){
+		detectarFraude(movimentacao);
+		double saldo = dao.calcularSaldo(conta.getId());
+		validarSaldo(saldo, movimentacao);
+		Date inicio = getInicioMesAnterior();  // Obtenha o início do mês anterior
+        Date fim = getFimMesAnterior();        // Obtenha o fim do mês anterior
+        double valorCashback = cashback(conta.getId(), inicio, fim);
+		saldo += valorCashback;
+		double valorFinal = movimentacao.getValorOperacao();
+        movimentacao.setValorOperacao(-valorFinal);
+		Movimentacao result = inserir(movimentacao);
+        saldo = dao.calcularSaldo(conta.getId());
+		verificarAlertaSaldoBaixo(saldo);
+        return result;
+		}
 	
 	
 	//As operações de Pix só podem ser realizadas entre 06:00 e 22:00.
@@ -126,4 +143,30 @@ public Movimentacao realizarSaque(Movimentacao movimentacao, Conta conta) {
 	public List<Movimentacao> consultarExtrato(Long id, Date inicio, Date fim) {
 		return dao.buscarPorData(id, inicio, fim);
 	}
+
+	public double cashback(Long id, Date inicio, Date fim){
+		return dao.cashback(id, inicio, fim);
+	}
+
+	private Date getInicioMesAnterior() {
+        Calendar cal = Calendar.getInstance();
+        cal.add(Calendar.MONTH, -1);           // Vai para o mês anterior
+        cal.set(Calendar.DAY_OF_MONTH, 1);      // Define o dia para o primeiro dia do mês
+        cal.set(Calendar.HOUR_OF_DAY, 0);       // Define a hora para meia-noite
+        cal.set(Calendar.MINUTE, 0);
+        cal.set(Calendar.SECOND, 0);
+        cal.set(Calendar.MILLISECOND, 0);
+        return cal.getTime();
+    }
+
+	private Date getFimMesAnterior() {
+        Calendar cal = Calendar.getInstance();
+        cal.add(Calendar.MONTH, -1);               // Vai para o mês anterior
+        cal.set(Calendar.DAY_OF_MONTH, cal.getActualMaximum(Calendar.DAY_OF_MONTH)); // Define o dia para o último dia do mês
+        cal.set(Calendar.HOUR_OF_DAY, 23);         // Define a hora para o último instante do dia
+        cal.set(Calendar.MINUTE, 59);
+        cal.set(Calendar.SECOND, 59);
+        cal.set(Calendar.MILLISECOND, 999);
+        return cal.getTime();
+    }
 }	

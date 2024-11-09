@@ -102,4 +102,19 @@ public class MovimentacaoDAO {
 		em.close();
 		return movimentacoes;
 	}
+
+	public Double cashback(Long id, Date inicio, Date fim){
+		EntityManager em = emf.createEntityManager();
+        return em.createQuery(
+            		"SELECT COALESCE(SUM(m.valorOperacao * 0.002), 0.0) " +
+                    "FROM Movimentacao m WHERE m.conta.id = :idConta " +
+                    "AND m.tipoTransacao = :tipoDebito " +
+                    "AND m.dataTransacao BETWEEN :inicio AND :fim", Double.class)
+                .setParameter("idConta", id)
+                .setParameter("tipoDebito", "débito") 
+                .setParameter("inicio", inicio)
+                .setParameter("fim", fim)
+            .getSingleResult();
+    
+	}
 }
