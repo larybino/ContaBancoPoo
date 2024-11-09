@@ -15,14 +15,14 @@ public class MovimentacaoTela {
 	public static void main(String[] args) throws ParseException {
 		MovimentacaoControle controle = new MovimentacaoControle();
 		ContaControle controleConta = new ContaControle();
-		Conta conta= controleConta.buscarPorId(1L);
+		Conta conta= controleConta.buscarPorId(5L);
 		Movimentacao movimentacao = new Movimentacao();
 		double saldo = controle.consultarSaldo(conta.getId());
 		System.out.println("Valor antes da operação: R$ " + saldo);
 		movimentacao.setDataTransacao(new Date());
-		movimentacao.setDescricao("debito de 10,00");
-		movimentacao.setTipoTransacao("débito");
-		movimentacao.setValorOperacao(10.);
+		movimentacao.setDescricao("depósito de 1000,00");
+		movimentacao.setTipoTransacao("depósito");
+		movimentacao.setValorOperacao(1000.);
 		movimentacao.setConta(conta);
 
 		switch(movimentacao.getTipoTransacao()){
@@ -41,6 +41,8 @@ public class MovimentacaoTela {
 			case "débito":
 				controle.debito(movimentacao, conta);
 		}
+		controleConta.tresMesesContaCorrente(conta);
+        controleConta.calcularRendimentoPoupanca(conta);
 
 		saldo = controle.consultarSaldo(conta.getId());
 		System.out.println("Valor depois da operação R$ " + saldo);

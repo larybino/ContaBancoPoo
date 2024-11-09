@@ -1,6 +1,7 @@
 package dao;
 import entidade.Conta;
 
+import java.util.Date;
 import java.util.List;
 
 import javax.persistence.EntityManager;
@@ -92,5 +93,35 @@ public class ContaDAO {
             .setParameter("id_conta", id)
             .getSingleResult();
     }
+
+    public void atualizarSaldoConta(Long id, Double rendimento) {
+        Double saldoAtual = calcularSaldo(id);
+        Double novoSaldo = saldoAtual + rendimento;
+        System.out.println("Novo saldo: " + novoSaldo);
+    }
     
+
+    public Double limiteCreditoPreAprovado(Long id, Date inicio, Date fim){
+		EntityManager em = emf.createEntityManager();
+        return em.createQuery(
+            		"SELECT COALESCE(SUM(m.valorOperacao) / COUNT(m), 0.0) " +
+                "FROM Movimentacao m WHERE m.conta.id = :idConta " +
+                "AND m.dataTransacao BETWEEN :inicio AND :fim", Double.class)
+            .setParameter("idConta", id)
+            .setParameter("inicio", inicio)
+            .setParameter("fim", fim)
+            .getSingleResult();
+	}
+
+    public Double calcularRendimentoPoupanca(Long id, Date inicio, Date fim) {
+        EntityManager em = emf.createEntityManager();
+        return em.createQuery(
+                "SELECT COALESCE(SUM(m.valorOperacao * 0.005), 0.0) " +  
+                "FROM Movimentacao m WHERE m.conta.id = :idConta " +
+                "AND m.dataTransacao BETWEEN :inicio AND :fim", Double.class)
+            .setParameter("idConta", id)
+            .setParameter("inicio", inicio)
+            .setParameter("fim", fim)
+            .getSingleResult();
+    }   
 }
