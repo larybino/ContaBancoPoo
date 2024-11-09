@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.List;
 
 import dao.MovimentacaoDAO;
+import entidade.Conta;
 import entidade.Movimentacao;
 
 public class MovimentacaoServico {
@@ -21,18 +22,19 @@ public class MovimentacaoServico {
 //Validar o CPF no momento de fazer uma transação (saque, depósito, pagamento ou Pix).
 //Tarifa de Operação: R$ 5,00 para pagamentos e pix, R$ 2,00 para saques.
 
-public Movimentacao realizarSaque(Movimentacao movimentacao) {
+public Movimentacao realizarSaque(Movimentacao movimentacao, Conta conta) {
 	detectarFraude(movimentacao);
-	double saldo = dao.calcularSaldo(movimentacao.getId());
+	double saldo = dao.calcularSaldo(conta.getId());
 	System.out.println("Saldo antes do saque: R$ " + saldo);
 	validarSaldo(saldo, movimentacao);
 	validarLimitesSaque(movimentacao);
 	double tarifa = 2.00;
 	double valorFinal = movimentacao.getValorOperacao() + tarifa;
-	movimentacao.setValorOperacao(-valorFinal); // Torna o valor negativo
+	movimentacao.setValorOperacao(-valorFinal);
 	Movimentacao result = inserir(movimentacao);
-	saldo = dao.calcularSaldo(movimentacao.getId()); // Recalcula após inserção
+	saldo = dao.calcularSaldo(conta.getId()); 
 	System.out.println("Saldo após o saque: R$ " + saldo);
+	verificarAlertaSaldoBaixo(saldo);
 	return result;
 }
 	
@@ -41,23 +43,23 @@ public Movimentacao realizarSaque(Movimentacao movimentacao) {
 		return inserir(movimentacao);
 	}
 	
-	public Movimentacao realizarPagamento(Movimentacao movimentacao) {
+	public Movimentacao realizarPagamento(Movimentacao movimentacao, Conta conta) {
 		detectarFraude(movimentacao);
-		double saldo = dao.calcularSaldo(movimentacao.getId());
+		double saldo = dao.calcularSaldo(conta.getId());
 		validarSaldo(saldo, movimentacao);
 		double tarifa = 5.00;
-		movimentacao.setValorOperacao(- (movimentacao.getValorOperacao() + tarifa)); // Torna o valor negativo
+		movimentacao.setValorOperacao(- (movimentacao.getValorOperacao() + tarifa)); 
 		verificarAlertaSaldoBaixo(saldo);
 		return inserir(movimentacao);
 	}
 	
-	public Movimentacao realizarPix(Movimentacao movimentacao) {
+	public Movimentacao realizarPix(Movimentacao movimentacao, Conta conta) {
 		validarHorarioPix();
 		detectarFraude(movimentacao);
-		double saldo = dao.calcularSaldo(movimentacao.getId());
+		double saldo = dao.calcularSaldo(conta.getId());
 		validarLimitePix(movimentacao);
 		double tarifa = 5.00;
-		movimentacao.setValorOperacao(- (movimentacao.getValorOperacao() + tarifa)); // Torna o valor negativo
+		movimentacao.setValorOperacao(- (movimentacao.getValorOperacao() + tarifa));
 		verificarAlertaSaldoBaixo(saldo);
 		return inserir(movimentacao);
 	}
