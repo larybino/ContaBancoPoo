@@ -15,14 +15,14 @@ public class MovimentacaoTela {
 	public static void main(String[] args) throws ParseException {
 		MovimentacaoControle controle = new MovimentacaoControle();
 		ContaControle controleConta = new ContaControle();
-		Conta conta= controleConta.buscarPorId(5L);
+		Conta conta= controleConta.buscarPorId(1L);
 		Movimentacao movimentacao = new Movimentacao();
 		double saldo = controle.consultarSaldo(conta.getId());
 		System.out.println("Valor antes da operação: R$ " + saldo);
 		movimentacao.setDataTransacao(new Date());
-		movimentacao.setDescricao("depósito de 1000,00");
-		movimentacao.setTipoTransacao("depósito");
-		movimentacao.setValorOperacao(1000.);
+		movimentacao.setDescricao("saque de 500,00");
+		movimentacao.setTipoTransacao("saque");
+		movimentacao.setValorOperacao(500.);
 		movimentacao.setConta(conta);
 
 		switch(movimentacao.getTipoTransacao()){

@@ -11,7 +11,7 @@ import entidade.TipoConta;
 public class ContaTela {
     public static void main(String[] args) {
         ClienteControle controleCliente = new ClienteControle();
-        Cliente cliente = controleCliente.buscarPorId(2L);
+        Cliente cliente = controleCliente.buscarPorId(1L);
         ContaControle controle = new ContaControle();
         Conta conta = new Conta();
         conta.setDataAbertura(new Date());
