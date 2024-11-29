@@ -5,7 +5,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.Query;
 
 
-public class ClienteDAO extends GenericDAO<Cliente> {
+public class ClienteDAO extends GenericoDAO<Cliente> {
     public ClienteDAO() {
         super(Cliente.class);
     }

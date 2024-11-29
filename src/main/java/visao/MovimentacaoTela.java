@@ -13,14 +13,14 @@ public class MovimentacaoTela {
 
 	public static void main(String[] args) throws ParseException {
 		ContaControle controleConta = new ContaControle();
-		Conta conta= controleConta.buscarPorId(1L);
+		Conta conta= controleConta.buscarPorId(4L);
 		Movimentacao movimentacao = new Movimentacao();
 		double saldo = controleConta.consultarSaldo(conta.getId());
 		System.out.println("Valor antes da operação: R$ " + saldo);
 		movimentacao.setDataTransacao(new Date());
-		movimentacao.setDescricao("saque de 500,00");
-		movimentacao.setTipoTransacao("saque");
-		movimentacao.setValorOperacao(500.);
+		movimentacao.setDescricao("depósito de 2000,00");
+		movimentacao.setTipoTransacao("pix");
+		movimentacao.setValorOperacao(100.);
 		movimentacao.setConta(conta);
 
 		switch(movimentacao.getTipoTransacao()){
@@ -47,9 +47,9 @@ public class MovimentacaoTela {
 
 		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 		Date inicio = sdf.parse("01/11/2024"); 
-		Date fim = sdf.parse("30/11/2024");  // Corrigido para 30/11 (novembro tem 30 dias)
+		Date fim = sdf.parse("30/11/2024"); 
 
-		List<Movimentacao> extrato = controleConta.consultarExtrato(conta.getId(), inicio, fim); // Método retorna movimentações
+		List<Movimentacao> extrato = controleConta.consultarExtrato(conta.getId(), inicio, fim); 
 
 		if (extrato != null && !extrato.isEmpty()) {
 			System.out.println("Extrato do período de " + sdf.format(inicio) + " a " + sdf.format(fim) + ":");

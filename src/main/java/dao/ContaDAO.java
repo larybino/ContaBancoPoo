@@ -8,7 +8,7 @@ import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
 
-public class ContaDAO extends GenericDAO<Conta> {
+public class ContaDAO extends GenericoDAO<Conta> {
     public ContaDAO() {
         super(Conta.class);
     }
@@ -60,8 +60,7 @@ public class ContaDAO extends GenericDAO<Conta> {
     public Double calcularSaldo(Long id) {
         EntityManager em = getEntityManager();
         return em.createQuery(
-            "SELECT COALESCE(SUM(m.valorOperacao), 0.0) FROM Movimentacao m WHERE m.conta.id = :id_conta", Double.class)
-            .setParameter("id_conta", id)
+            "SELECT COALESCE(SUM(m.valorOperacao), 0.0) FROM Movimentacao m WHERE m.conta.id = "+id, Double.class)
             .getSingleResult();
     }
 

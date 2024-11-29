@@ -5,18 +5,19 @@ import java.util.List;
 
 import entidade.Conta;
 import entidade.Movimentacao;
+import servico.BaseServico;
 import servico.ContaServico;
 
-public class ContaControle {
+public class ContaControle implements BaseControle<Conta> {
     ContaServico servico = new ContaServico();
 
     public Conta inserir(Conta conta) {
 		return servico.inserir(conta);
 	}
 
-    public void excluir(Conta conta) {
-        servico.excluir(conta);
-    }
+    // public void excluir(Long conta) {
+    //     servico.excluir(conta);
+    // }
 
     public boolean validarLimiteOperacoes(Long id){
         return servico.validarLimiteOperacoes(id);
@@ -70,4 +71,9 @@ public class ContaControle {
 	public double consultarSaldo(Long id) {
 		return servico.consultarSaldo(id);
 	}
+
+    @Override
+    public BaseServico<Conta> getServico() {
+        return servico;
+    }
 }

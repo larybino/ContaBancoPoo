@@ -6,12 +6,12 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 
-public class GenericDAO<T> {
+public class GenericoDAO<T> {
     private static final EntityManagerFactory emf = Persistence.createEntityManagerFactory("bancoPU");
 
     private final Class<T> entityClass;
 
-    public GenericDAO(Class<T> entityClass) {
+    public GenericoDAO(Class<T> entityClass) {
         this.entityClass = entityClass; 
     }
 
