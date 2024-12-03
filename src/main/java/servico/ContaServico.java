@@ -79,6 +79,7 @@ public class ContaServico implements BaseServico<Conta> {
         ValidarLimites.validarLimitePix(movimentacao.getValorOperacao());
         double tarifa = 5.00;
         movimentacao.setValorOperacao(-(movimentacao.getValorOperacao() + tarifa));
+        ValidarLimites.validarSaldo(saldo, movimentacao.getValorOperacao());
         ValidarLimites.verificarAlertaSaldoBaixo(saldo);
         return movimentacaoDAO.inserir(movimentacao);
     }
