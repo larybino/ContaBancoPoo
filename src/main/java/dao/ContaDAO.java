@@ -100,7 +100,7 @@ public class ContaDAO extends GenericoDAO<Conta> {
     public Double cashback(Long id, Date inicio, Date fim){
 		EntityManager em = getEntityManager();
         return em.createQuery(
-            		"SELECT COALESCE(SUM(m.valorOperacao * 0.002), 0.0) " +
+            		"SELECT COALESCE(SUM(ABS(m.valorOperacao) * 0.002), 0.0) " +
                     "FROM Movimentacao m WHERE m.conta.id = :idConta " +
                     "AND m.tipoTransacao = :tipoDebito " +
                     "AND m.dataTransacao BETWEEN :inicio AND :fim", Double.class)

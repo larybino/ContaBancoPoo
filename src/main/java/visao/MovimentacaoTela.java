@@ -18,9 +18,9 @@ public class MovimentacaoTela {
 		double saldo = controleConta.consultarSaldo(conta.getId());
 		System.out.println("Valor antes da operação: R$ " + saldo);
 		movimentacao.setDataTransacao(new Date());
-		movimentacao.setDescricao("depósito de 2000,00");
-		movimentacao.setTipoTransacao("depósito");
-		movimentacao.setValorOperacao(2000.);
+		movimentacao.setDescricao("débito de 200,00");
+		movimentacao.setTipoTransacao("débito");
+		movimentacao.setValorOperacao(200.);
 		movimentacao.setConta(conta);
 
 		switch(movimentacao.getTipoTransacao()){
@@ -41,6 +41,7 @@ public class MovimentacaoTela {
 		}
 		controleConta.tresMesesContaCorrente(conta);
         controleConta.calcularRendimentoPoupanca(conta);
+		
 
 		saldo = controleConta.consultarSaldo(conta.getId());
 		System.out.println("Valor depois da operação R$ " + saldo);

@@ -91,6 +91,7 @@ public class ContaServico implements BaseServico<Conta> {
         Date inicio = ValidarDatas.getInicioMesAnterior();
         Date fim = ValidarDatas.getFimMesAnterior();
         double valorCashback = cashback(conta.getId(), inicio, fim);
+        System.out.println("Cashback: R$ " + valorCashback);
         saldo += valorCashback;
         double valorFinal = movimentacao.getValorOperacao();
         movimentacao.setValorOperacao(-valorFinal);
