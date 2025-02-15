@@ -5,7 +5,7 @@ import java.time.LocalTime;
 public class ValidarLimites {
     	//Limite de R$ 300,00 para operações de pix.
 	public static void validarLimitePix(Double valorOperacao) {
-		if (valorOperacao > 300.00) {
+		if (valorOperacao < -300.00) {
 			throw new IllegalArgumentException("Valor ultrapassou o limite de R$300,00");
 		}
 	}

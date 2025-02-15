@@ -76,6 +76,7 @@ public class ContaDAO extends GenericoDAO<Conta> {
         return em.createQuery(
             		"SELECT COALESCE(SUM(m.valorOperacao) / COUNT(m), 0.0) " +
                 "FROM Movimentacao m WHERE m.conta.id = :idConta " +
+                "AND m.valorOperacao > 0 " +
                 "AND m.dataTransacao BETWEEN :inicio AND :fim", Double.class)
             .setParameter("idConta", id)
             .setParameter("inicio", inicio)
@@ -88,6 +89,7 @@ public class ContaDAO extends GenericoDAO<Conta> {
         return em.createQuery(
                 "SELECT COALESCE(SUM(m.valorOperacao * 0.005), 0.0) " +  
                 "FROM Movimentacao m WHERE m.conta.id = :idConta " +
+                "AND m.valorOperacao > 0 " +  
                 "AND m.dataTransacao BETWEEN :inicio AND :fim", Double.class)
             .setParameter("idConta", id)
             .setParameter("inicio", inicio)

@@ -38,7 +38,7 @@ As informações de cada conta e as operações realizadas devem ser armazenadas
   - Permitir a consulta de extrato mensal.
   - Permitir a consulta de extrato periódico.
 
-## Complemento - 07/11/2024
+## Complemento 
 
 ### Novas Implementações:
 

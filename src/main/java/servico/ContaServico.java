@@ -76,9 +76,9 @@ public class ContaServico implements BaseServico<Conta> {
         ValidarLimites.detectarFraude(dao.calcularMediaGastos(conta.getId()), movimentacao.getValorOperacao());
         double saldo = dao.calcularSaldo(conta.getId());
         ValidarLimites.validarSaldo(saldo, movimentacao.getValorOperacao());
-        ValidarLimites.validarLimitePix(movimentacao.getValorOperacao());
         double tarifa = 5.00;
         movimentacao.setValorOperacao(-(movimentacao.getValorOperacao() + tarifa));
+        ValidarLimites.validarLimitePix(movimentacao.getValorOperacao());
         ValidarLimites.validarSaldo(saldo, movimentacao.getValorOperacao());
         ValidarLimites.verificarAlertaSaldoBaixo(saldo);
         return movimentacaoDAO.inserir(movimentacao);

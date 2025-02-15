@@ -37,13 +37,13 @@ public class ClienteServico implements BaseServico<Cliente> {
     }
 
     @Override
-    public Cliente alterar(Cliente entidade) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'alterar'");
+    public void excluir(Long id) {
+        dao.excluir(id);
     }
 
     @Override
-    public void excluir(Long id) {
-        dao.excluir(id);
+    public Cliente alterar(Cliente entidade) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'alterar'");
     }
 }

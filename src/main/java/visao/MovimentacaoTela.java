@@ -13,14 +13,14 @@ public class MovimentacaoTela {
 
 	public static void main(String[] args) throws ParseException {
 		ContaControle controleConta = new ContaControle();
-		Conta conta= controleConta.buscarPorId(1L);
+		Conta conta= controleConta.buscarPorId(3L);
 		Movimentacao movimentacao = new Movimentacao();
 		double saldo = controleConta.consultarSaldo(conta.getId());
 		System.out.println("Valor antes da operação: R$ " + saldo);
 		movimentacao.setDataTransacao(new Date());
-		movimentacao.setDescricao("depósito de 100,00");
+		movimentacao.setDescricao("depósito de 2000,00");
 		movimentacao.setTipoTransacao("depósito");
-		movimentacao.setValorOperacao(100.);
+		movimentacao.setValorOperacao(2000.);
 		movimentacao.setConta(conta);
 
 		switch(movimentacao.getTipoTransacao()){
@@ -46,8 +46,8 @@ public class MovimentacaoTela {
 		System.out.println("Valor depois da operação R$ " + saldo);
 
 		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-		Date inicio = sdf.parse("01/11/2024"); 
-		Date fim = sdf.parse("30/11/2024"); 
+		Date inicio = sdf.parse("01/02/2025"); 
+		Date fim = sdf.parse("30/02/2025"); 
 
 		List<Movimentacao> extrato = controleConta.consultarExtrato(conta.getId(), inicio, fim); 
 
